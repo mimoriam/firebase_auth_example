@@ -18,7 +18,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-
   @override
   Widget build(BuildContext context) {
     final rootStateModel = context.watch<RootState>();
@@ -30,6 +29,7 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Text("Sign Out!"),
         onPressed: () async {
           final String returnValue = await Auth(auth: widget.auth).signOut();
+          if (returnValue == "Success") {}
         },
       ),
     );

@@ -3,7 +3,6 @@ import 'package:provider/provider.dart';
 
 // Screens:
 import 'package:firebase_auth_example/state/root.dart';
-import 'package:firebase_auth_example/screens/home_page.dart';
 import 'package:firebase_auth_example/screens/login_page.dart';
 import 'package:firebase_auth_example/screens/register_page.dart';
 

@@ -8,6 +8,9 @@ import 'package:firebase_auth_example/services/auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+// Custom:
+import 'package:flutter_signin_button/flutter_signin_button.dart';
+
 class LoginPage extends StatefulWidget {
   final FirebaseAuth auth;
   final FirebaseFirestore firestore;
@@ -78,6 +81,9 @@ class _LoginPageState extends State<LoginPage> {
                       }
                     },
                   ),
+                  SignInButton(Buttons.GoogleDark, onPressed: () async {
+                    await Auth(auth: widget.auth).signInWithGoogle();
+                  }),
                   ElevatedButton(
                     child: const Text("Create Account"),
                     onPressed: () async {
