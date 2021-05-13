@@ -14,8 +14,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 // Entry point:
 void main() {
   runApp(
+    // Manage State/Providers here:
     MultiProvider(
-      providers: [ChangeNotifierProvider(create: (BuildContext context) => RootState())],
+      providers: [
+        ChangeNotifierProvider(create: (BuildContext context) => RootState()),
+      ],
       child: MyApp(),
     ),
   );
@@ -29,6 +32,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
+
       // Configure themes here:
       theme: ThemeData.dark(),
 
@@ -43,7 +47,6 @@ class MyApp extends StatelessWidget {
         // Initialize FlutterFire:
         future: Firebase.initializeApp(),
         builder: (BuildContext context, AsyncSnapshot<FirebaseApp> snapshot) {
-
           // Check for errors
           if (snapshot.hasError) {
             print(snapshot.error);
