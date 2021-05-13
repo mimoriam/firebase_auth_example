@@ -27,6 +27,7 @@ class _RootState extends State<Root> {
       stream: Auth(auth: _auth).user,
       builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
         if (snapshot.connectionState == ConnectionState.active) {
+          print(snapshot.data);
           if (snapshot.data?.uid == null) {
             return LoginPage(
               auth: _auth,

@@ -1,30 +1,25 @@
 import 'package:flutter/material.dart';
 
-// Screens:
-import 'package:firebase_auth_example/screens/register_page.dart';
-
 // Firebase stuff:
 import 'package:firebase_auth_example/services/auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class LoginPage extends StatefulWidget {
+class RegisterPage extends StatefulWidget {
   final FirebaseAuth auth;
   final FirebaseFirestore firestore;
 
-  const LoginPage({
+  const RegisterPage({
     Key key,
     this.auth,
     this.firestore,
   }) : super(key: key);
 
   @override
-  _LoginPageState createState() => _LoginPageState();
+  _RegisterPageState createState() => _RegisterPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+class _RegisterPageState extends State<RegisterPage> {
 
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
@@ -33,7 +28,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Login"),
+        title: Text("Register"),
       ),
       body: Center(
         child: Padding(
@@ -59,16 +54,16 @@ class _LoginPageState extends State<LoginPage> {
                     height: 20,
                   ),
                   ElevatedButton(
-                    child: const Text("Sign In"),
-                    key: const ValueKey("signIn"),
+                    child: const Text("Create Account"),
                     onPressed: () async {
-                      final String returnValue = await Auth(auth: widget.auth).signIn(
+                      final String returnValue = await Auth(auth: widget.auth).createAccount(
                         email: _emailController.text,
                         password: _passwordController.text,
                       );
                       if (returnValue == "Success") {
                         _emailController.clear();
                         _passwordController.clear();
+                        Navigator.pop(context);
                       } else {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
@@ -76,21 +71,6 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                         );
                       }
-                    },
-                  ),
-                  ElevatedButton(
-                    child: const Text("Create Account"),
-                    onPressed: () async {
-                      // Navigator.pushNamed(context, '/register');
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => RegisterPage(
-                            auth: _auth,
-                            firestore: _firestore,
-                          ),
-                        ),
-                      );
                     },
                   ),
                 ],
