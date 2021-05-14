@@ -45,6 +45,7 @@ class MyApp extends StatelessWidget {
 
           // Once complete, show your application
           if (snapshot.connectionState == ConnectionState.done) {
+            // Return Root:
             return Root();
           }
 
