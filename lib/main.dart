@@ -32,7 +32,6 @@ class MyApp extends StatelessWidget {
 
       // Configure themes here:
       theme: Provider.of<ThemeNotifier>(context).darkTheme ? darkTheme : lightTheme,
-      // theme: context.watch<ThemeNotifier>().darkTheme ? darkTheme : lightTheme,
 
       home: FutureBuilder(
         // Initialize FlutterFire:
