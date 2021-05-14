@@ -10,10 +10,9 @@ class RegisterPage extends StatefulWidget {
   final FirebaseFirestore firestore;
 
   const RegisterPage({
-    Key key,
-    this.auth,
-    this.firestore,
-  }) : super(key: key);
+    required this.auth,
+    required this.firestore,
+  });
 
   @override
   _RegisterPageState createState() => _RegisterPageState();

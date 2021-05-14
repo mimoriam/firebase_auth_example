@@ -16,10 +16,9 @@ class LoginPage extends StatefulWidget {
   final FirebaseFirestore firestore;
 
   const LoginPage({
-    Key key,
-    this.auth,
-    this.firestore,
-  }) : super(key: key);
+    required this.auth,
+    required this.firestore,
+  });
 
   @override
   _LoginPageState createState() => _LoginPageState();
@@ -43,63 +42,64 @@ class _LoginPageState extends State<LoginPage> {
           padding: const EdgeInsets.all(60.0),
           child: Builder(
             builder: (BuildContext context) {
-              return Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  TextFormField(
-                    key: const ValueKey("username"),
-                    textAlign: TextAlign.center,
-                    decoration: const InputDecoration(hintText: "Username"),
-                    controller: _emailController,
-                  ),
-                  TextFormField(
-                    key: const ValueKey("password"),
-                    textAlign: TextAlign.center,
-                    decoration: const InputDecoration(hintText: "Password"),
-                    controller: _passwordController,
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  ElevatedButton(
-                    child: const Text("Sign In"),
-                    key: const ValueKey("signIn"),
-                    onPressed: () async {
-                      final String returnValue = await Auth(auth: widget.auth).signIn(
-                        email: _emailController.text,
-                        password: _passwordController.text,
-                      );
-                      if (returnValue == "Success") {
-                        _emailController.clear();
-                        _passwordController.clear();
-                      } else {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(returnValue),
+              return SingleChildScrollView(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    TextFormField(
+                      key: const ValueKey("username"),
+                      textAlign: TextAlign.center,
+                      decoration: const InputDecoration(hintText: "Username"),
+                      controller: _emailController,
+                    ),
+                    TextFormField(
+                      key: const ValueKey("password"),
+                      textAlign: TextAlign.center,
+                      decoration: const InputDecoration(hintText: "Password"),
+                      controller: _passwordController,
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    ElevatedButton(
+                      child: const Text("Sign In"),
+                      key: const ValueKey("signIn"),
+                      onPressed: () async {
+                        final String? returnValue = await Auth(auth: widget.auth).signIn(
+                          email: _emailController.text,
+                          password: _passwordController.text,
+                        );
+                        if (returnValue == "Success") {
+                          _emailController.clear();
+                          _passwordController.clear();
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(returnValue!),
+                            ),
+                          );
+                        }
+                      },
+                    ),
+                    SignInButton(Buttons.GoogleDark, onPressed: () async {
+                      await Auth(auth: widget.auth).signInWithGoogle();
+                    }),
+                    ElevatedButton(
+                      child: const Text("Create Account"),
+                      onPressed: () async {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => RegisterPage(
+                              auth: _auth,
+                              firestore: _firestore,
+                            ),
                           ),
                         );
-                      }
-                    },
-                  ),
-                  SignInButton(Buttons.GoogleDark, onPressed: () async {
-                    await Auth(auth: widget.auth).signInWithGoogle();
-                  }),
-                  ElevatedButton(
-                    child: const Text("Create Account"),
-                    onPressed: () async {
-                      // Navigator.pushNamed(context, '/register');
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => RegisterPage(
-                            auth: _auth,
-                            firestore: _firestore,
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-                ],
+                      },
+                    ),
+                  ],
+                ),
               );
             },
           ),

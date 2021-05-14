@@ -28,6 +28,8 @@ class _RootState extends State<Root> {
       builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
         if (snapshot.connectionState == ConnectionState.active) {
           print(snapshot.data);
+
+          // If user's Id == null, go to Login Page, otherwise Home:
           if (snapshot.data?.uid == null) {
             return LoginPage(
               auth: _auth,

@@ -4,11 +4,11 @@ import 'package:google_sign_in/google_sign_in.dart';
 class Auth {
   final FirebaseAuth auth;
 
-  Auth({this.auth});
+  Auth({required this.auth});
 
-  Stream<User> get user => auth.authStateChanges();
+  Stream<User?> get user => auth.authStateChanges();
 
-  Future<String> createAccount({String email, String password}) async {
+  Future<String> createAccount({required String email, required String password}) async {
     try {
       UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: email.trim(),
@@ -21,18 +21,20 @@ class Auth {
       } else if (e.code == 'email-already-in-use') {
         print('The account already exists for that email.');
       }
+      return "Error";
     } catch (e) {
       print(e);
-      return e.message;
+      return "Error";
     }
   }
 
-  Future<String> signIn({String email, String password}) async {
+  Future<String?> signIn({required String email, required String password}) async {
     try {
       UserCredential userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: email.trim(),
         password: password.trim(),
       );
+      return "Success";
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         print('No user found for that email.');
@@ -43,7 +45,7 @@ class Auth {
     }
   }
 
-  Future<String> signOut() async {
+  Future<String?> signOut() async {
     try {
       await auth.signOut();
       return "Success";
@@ -56,10 +58,10 @@ class Auth {
 
   Future<UserCredential> signInWithGoogle() async {
     // Trigger the authentication flow
-    final GoogleSignInAccount googleUser = await GoogleSignIn().signIn();
+    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
 
     // Obtain the auth details from the request
-    final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+    final GoogleSignInAuthentication googleAuth = await googleUser!.authentication;
 
     // Create a new credential
     final credential = GoogleAuthProvider.credential(

@@ -3,8 +3,6 @@ import 'package:provider/provider.dart';
 
 // Screens:
 import 'package:firebase_auth_example/state/root.dart';
-import 'package:firebase_auth_example/screens/login_page.dart';
-import 'package:firebase_auth_example/screens/register_page.dart';
 
 // Firebase stuff:
 import 'package:firebase_core/firebase_core.dart';
@@ -23,9 +21,6 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  // final FirebaseAuth _auth = FirebaseAuth.instance;
-  // final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -33,13 +28,6 @@ class MyApp extends StatelessWidget {
 
       // Configure themes here:
       theme: ThemeData.dark(),
-
-      // Configure routes/pages here:
-      routes: {
-        '/root': (context) => Root(),
-        '/login': (context) => LoginPage(),
-        '/register': (context) => RegisterPage()
-      },
 
       home: FutureBuilder(
         // Initialize FlutterFire:
