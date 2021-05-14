@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
-// Firebase stuff:
+// Services:
 import 'package:firebase_auth_example/services/auth.dart';
+
+// Firebase stuff:
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 

@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-// Screens:
+// State:
 import 'package:firebase_auth_example/state/root.dart';
+
+// Services:
+import 'package:firebase_auth_example/services/theme.dart';
 
 // Firebase stuff:
 import 'package:firebase_core/firebase_core.dart';
@@ -14,6 +17,7 @@ void main() {
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (BuildContext context) => RootState()),
+        ChangeNotifierProvider(create: (BuildContext context) => ThemeNotifier()),
       ],
       child: MyApp(),
     ),
@@ -27,7 +31,8 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
 
       // Configure themes here:
-      theme: ThemeData.dark(),
+      theme: Provider.of<ThemeNotifier>(context).darkTheme ? darkTheme : lightTheme,
+      // theme: context.watch<ThemeNotifier>().darkTheme ? darkTheme : lightTheme,
 
       home: FutureBuilder(
         // Initialize FlutterFire:

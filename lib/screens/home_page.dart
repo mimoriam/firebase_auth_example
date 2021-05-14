@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-// Firebase stuff:
+// Services:
+import 'package:firebase_auth_example/services/theme.dart';
 import 'package:firebase_auth_example/services/auth.dart';
+
+// Firebase stuff:
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -23,12 +26,22 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Text("Home"),
       ),
-      body: ElevatedButton(
-        child: Text("Sign Out!"),
-        onPressed: () async {
-          final String? returnValue = await Auth(auth: widget.auth).signOut();
-          if (returnValue == "Success") {}
-        },
+      body: Column(
+        children: [
+          ElevatedButton(
+            child: Text("Sign Out!"),
+            onPressed: () async {
+              final String? returnValue = await Auth(auth: widget.auth).signOut();
+              if (returnValue == "Success") {}
+            },
+          ),
+          SwitchListTile(
+            onChanged: (val) {
+              Provider.of<ThemeNotifier>(context, listen: false).toggleTheme();
+            },
+            value: Provider.of<ThemeNotifier>(context).darkTheme,
+          ),
+        ],
       ),
     );
   }
