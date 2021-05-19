@@ -179,6 +179,10 @@ refreshToken: , tenantId: null, uid: IbWPRZjnI6bUkJb2MarPqlZgV2R2)
     }
   }
 
+  Future<void> resetPassword({required String email}) async {
+    await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
+  }
+
   Future<String?> deleteAccount() async {
     if (auth.currentUser != null) {
       try {

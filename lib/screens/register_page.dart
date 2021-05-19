@@ -22,6 +22,7 @@ class RegisterPage extends StatefulWidget {
 
 class _RegisterPageState extends State<RegisterPage> {
 
+  final TextEditingController _displayNameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
@@ -43,6 +44,12 @@ class _RegisterPageState extends State<RegisterPage> {
                     key: const ValueKey("username"),
                     textAlign: TextAlign.center,
                     decoration: const InputDecoration(hintText: "Username"),
+                    controller: _displayNameController,
+                  ),
+                  TextFormField(
+                    key: const ValueKey("email"),
+                    textAlign: TextAlign.center,
+                    decoration: const InputDecoration(hintText: "Email"),
                     controller: _emailController,
                   ),
                   TextFormField(
@@ -58,10 +65,12 @@ class _RegisterPageState extends State<RegisterPage> {
                     child: const Text("Create Account"),
                     onPressed: () async {
                       final String returnValue = await Auth(auth: widget.auth).createAccount(
+                        displayName: _displayNameController.text,
                         email: _emailController.text,
                         password: _passwordController.text,
                       );
                       if (returnValue == "Success") {
+                        _displayNameController.clear();
                         _emailController.clear();
                         _passwordController.clear();
                         Navigator.pop(context);

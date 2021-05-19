@@ -49,9 +49,9 @@ class _LoginPageState extends State<LoginPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     TextFormField(
-                      key: const ValueKey("username"),
+                      key: const ValueKey("email"),
                       textAlign: TextAlign.center,
-                      decoration: const InputDecoration(hintText: "Username"),
+                      decoration: const InputDecoration(hintText: "Email"),
                       controller: _emailController,
                     ),
                     TextFormField(
