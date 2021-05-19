@@ -47,3 +47,12 @@ class ThemeNotifier extends ChangeNotifier {
     _prefs!.setBool(key, _darkTheme);
   }
 }
+
+/*
+SwitchListTile(
+            onChanged: (val) {
+              Provider.of<ThemeNotifier>(context, listen: false).toggleTheme();
+            },
+            value: Provider.of<ThemeNotifier>(context).darkTheme,
+          ),
+ */

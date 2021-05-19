@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:firebase_auth_example/state/root.dart';
 
 // Services:
-import 'package:firebase_auth_example/services/theme.dart';
+import 'package:firebase_auth_example/state/theme.dart';
 
 // Firebase stuff:
 import 'package:firebase_core/firebase_core.dart';

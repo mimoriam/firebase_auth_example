@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 // Services:
-import 'package:firebase_auth_example/services/theme.dart';
+import 'package:firebase_auth_example/state/theme.dart';
 import 'package:firebase_auth_example/services/auth.dart';
 
 // Firebase stuff:
