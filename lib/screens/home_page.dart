@@ -73,6 +73,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   itemCount: snapshot.data?.length,
                   itemBuilder: (context, index) {
                     return ListTile(
+                      leading: Text(snapshot.data![index].address.one),
                       title: Text(snapshot.data![index].content),
                       trailing: ElevatedButton(
                         onPressed: () async {
