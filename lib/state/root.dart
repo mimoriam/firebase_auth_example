@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 
+// State:
+
 // Screens:
 import 'package:firebase_auth_example/screens/home_page.dart';
 import 'package:firebase_auth_example/screens/login_page.dart';
+
+// Models:
 
 // Services:
 import 'package:firebase_auth_example/services/auth.dart';
@@ -10,6 +14,8 @@ import 'package:firebase_auth_example/services/auth.dart';
 // Firebase stuff:
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+
+// Custom:
 
 // Global state via provider resides here:
 class RootState extends ChangeNotifier {}
@@ -46,7 +52,7 @@ class _RootState extends State<Root> {
         } else {
           return const Scaffold(
             body: Center(
-              child: Text("Loading..."),
+              child: CircularProgressIndicator(),
             ),
           );
         }

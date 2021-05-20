@@ -1,14 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 // State:
+import 'package:provider/provider.dart';
 import 'package:firebase_auth_example/state/root.dart';
+import 'package:firebase_auth_example/state/theme.dart';
+
+// Screens:
+
+// Models:
 
 // Services:
-import 'package:firebase_auth_example/state/theme.dart';
 
 // Firebase stuff:
 import 'package:firebase_core/firebase_core.dart';
+
+// Custom:
 
 // Entry point:
 void main() {
@@ -55,7 +61,7 @@ class MyApp extends StatelessWidget {
           // Otherwise, show something whilst waiting for initialization to complete
           return const Scaffold(
             body: Center(
-              child: Text("Loading..."),
+              child: CircularProgressIndicator(),
             ),
           );
         },

@@ -1,4 +1,16 @@
 import 'package:flutter/material.dart';
+
+// State:
+
+// Screens:
+
+// Models:
+
+// Services:
+
+// Firebase stuff:
+
+// Custom:
 import 'package:shared_preferences/shared_preferences.dart';
 
 ThemeData lightTheme = ThemeData(

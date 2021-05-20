@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 
+// State:
+
 // Screens:
 import 'package:firebase_auth_example/screens/register_page.dart';
+
+// Models:
 
 // Services:
 import 'package:firebase_auth_example/services/auth.dart';
