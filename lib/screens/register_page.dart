@@ -14,6 +14,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 // Custom:
+import 'package:flutter_form_builder/flutter_form_builder.dart';
 
 class RegisterPage extends StatefulWidget {
   final FirebaseAuth auth;
@@ -29,10 +30,7 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
-
-  final TextEditingController _displayNameController = TextEditingController();
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
+  final _formKey = GlobalKey<FormBuilderState>();
 
   @override
   Widget build(BuildContext context) {
@@ -45,53 +43,83 @@ class _RegisterPageState extends State<RegisterPage> {
           padding: const EdgeInsets.all(60.0),
           child: Builder(
             builder: (BuildContext context) {
-              return Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  TextFormField(
-                    key: const ValueKey("username"),
-                    textAlign: TextAlign.center,
-                    decoration: const InputDecoration(hintText: "Username"),
-                    controller: _displayNameController,
-                  ),
-                  TextFormField(
-                    key: const ValueKey("email"),
-                    textAlign: TextAlign.center,
-                    decoration: const InputDecoration(hintText: "Email"),
-                    controller: _emailController,
-                  ),
-                  TextFormField(
-                    key: const ValueKey("password"),
-                    textAlign: TextAlign.center,
-                    decoration: const InputDecoration(hintText: "Password"),
-                    controller: _passwordController,
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  ElevatedButton(
-                    child: const Text("Create Account"),
-                    onPressed: () async {
-                      final String returnValue = await Auth(auth: widget.auth).createAccount(
-                        displayName: _displayNameController.text,
-                        email: _emailController.text,
-                        password: _passwordController.text,
-                      );
-                      if (returnValue == "Success") {
-                        _displayNameController.clear();
-                        _emailController.clear();
-                        _passwordController.clear();
-                        Navigator.pop(context);
-                      } else {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(returnValue),
+              return SingleChildScrollView(
+                child: FormBuilder(
+                  key: _formKey,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      FormBuilderTextField(
+                        name: 'name',
+                        validator: FormBuilderValidators.compose([
+                          FormBuilderValidators.required(context),
+                        ]),
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                        decoration: InputDecoration(
+                          labelText: "Name",
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(20.0),
                           ),
-                        );
-                      }
-                    },
+                          labelStyle: TextStyle(),
+                        ),
+                      ),
+                      FormBuilderTextField(
+                        name: 'email',
+                        validator: FormBuilderValidators.compose([
+                          FormBuilderValidators.required(context),
+                          FormBuilderValidators.email(context),
+                          FormBuilderValidators.minLength(context, 6),
+                        ]),
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                        decoration: InputDecoration(
+                          labelText: "Email",
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(20.0),
+                          ),
+                          labelStyle: TextStyle(),
+                        ),
+                      ),
+                      FormBuilderTextField(
+                        name: 'password',
+                        validator: FormBuilderValidators.compose([
+                          FormBuilderValidators.required(context),
+                          FormBuilderValidators.minLength(context, 6),
+                        ]),
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                        decoration: InputDecoration(
+                          labelText: "Password",
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(20.0),
+                          ),
+                          labelStyle: TextStyle(),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 20.0,
+                      ),
+                      ElevatedButton(
+                        child: const Text("Create Account"),
+                        onPressed: () async {
+                          final String? returnValue = await Auth(auth: widget.auth).createAccount(
+                            displayName: _formKey.currentState!.fields['name']!.value,
+                            email: _formKey.currentState!.fields['email']!.value,
+                            password: _formKey.currentState!.fields['password']!.value,
+                          );
+                          if (returnValue == "Success") {
+                            _formKey.currentState?.reset();
+                            Navigator.pop(context);
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(returnValue!),
+                              ),
+                            );
+                          }
+                        },
+                      ),
+                    ],
                   ),
-                ],
+                ),
               );
             },
           ),

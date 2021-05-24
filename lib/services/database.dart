@@ -27,7 +27,7 @@ class Database {
           .collection("todos")
           // .where("done", isEqualTo: false)
           .snapshots()
-          .map((QuerySnapshot<Map<String, dynamic>> query) {
+          .map((QuerySnapshot<Map<String, dynamic>> query ) {
         final List<TodoModel> returnValue = <TodoModel>[];
         for (final DocumentSnapshot<Map<String, dynamic>> doc in query.docs) {
           returnValue.add(TodoModel.fromDocumentSnapshot(documentSnapshot: doc));

@@ -16,6 +16,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 // Custom:
 import 'package:flutter_signin_button/flutter_signin_button.dart';
+import 'package:flutter_form_builder/flutter_form_builder.dart';
 
 class LoginPage extends StatefulWidget {
   final FirebaseAuth auth;
@@ -34,8 +35,7 @@ class _LoginPageState extends State<LoginPage> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
+  final _formKey = GlobalKey<FormBuilderState>();
 
   @override
   Widget build(BuildContext context) {
@@ -49,62 +49,79 @@ class _LoginPageState extends State<LoginPage> {
           child: Builder(
             builder: (BuildContext context) {
               return SingleChildScrollView(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    TextFormField(
-                      key: const ValueKey("email"),
-                      textAlign: TextAlign.center,
-                      decoration: const InputDecoration(hintText: "Email"),
-                      controller: _emailController,
-                    ),
-                    TextFormField(
-                      key: const ValueKey("password"),
-                      textAlign: TextAlign.center,
-                      decoration: const InputDecoration(hintText: "Password"),
-                      controller: _passwordController,
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    ElevatedButton(
-                      child: const Text("Sign In"),
-                      key: const ValueKey("signIn"),
-                      onPressed: () async {
-                        final String? returnValue = await Auth(auth: widget.auth).signIn(
-                          email: _emailController.text,
-                          password: _passwordController.text,
-                        );
-                        if (returnValue == "Success") {
-                          _emailController.clear();
-                          _passwordController.clear();
-                        } else {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text(returnValue!),
+                child: FormBuilder(
+                  key: _formKey,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      FormBuilderTextField(
+                        name: 'email',
+                        validator: FormBuilderValidators.compose([
+                          FormBuilderValidators.required(context),
+                          FormBuilderValidators.email(context),
+                          FormBuilderValidators.minLength(context, 6),
+                        ]),
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                        decoration: InputDecoration(
+                          labelText: "Email",
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(20.0),
+                          ),
+                          labelStyle: TextStyle(),
+                        ),
+                      ),
+                      FormBuilderTextField(
+                        name: 'password',
+                        validator: FormBuilderValidators.compose([
+                          FormBuilderValidators.required(context),
+                          FormBuilderValidators.minLength(context, 6),
+                        ]),
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                        decoration: InputDecoration(
+                          labelText: "Password",
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(20.0),
+                          ),
+                          labelStyle: TextStyle(),
+                        ),
+                      ),
+                      ElevatedButton(
+                        child: const Text("Sign In"),
+                        onPressed: () async {
+                          final String? returnValue = await Auth(auth: widget.auth).signIn(
+                            email: _formKey.currentState!.fields['email']!.value,
+                            password: _formKey.currentState!.fields['password']!.value,
+                          );
+                          if (returnValue == "Success") {
+                            _formKey.currentState?.reset();
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(returnValue!),
+                              ),
+                            );
+                          }
+                        },
+                      ),
+                      ElevatedButton(
+                        child: const Text("Create Account"),
+                        onPressed: () async {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => RegisterPage(
+                                auth: _auth,
+                                firestore: _firestore,
+                              ),
                             ),
                           );
-                        }
-                      },
-                    ),
-                    SignInButton(Buttons.GoogleDark, onPressed: () async {
-                      await Auth(auth: widget.auth).signInWithGoogle();
-                    }),
-                    ElevatedButton(
-                      child: const Text("Create Account"),
-                      onPressed: () async {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => RegisterPage(
-                              auth: _auth,
-                              firestore: _firestore,
-                            ),
-                          ),
-                        );
-                      },
-                    ),
-                  ],
+                        },
+                      ),
+                      SignInButton(Buttons.GoogleDark, onPressed: () async {
+                        await Auth(auth: widget.auth).signInWithGoogle();
+                      }),
+                    ],
+                  ),
                 ),
               );
             },
