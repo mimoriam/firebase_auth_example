@@ -1,13 +1,20 @@
 import 'package:flutter/material.dart';
+
+// State:
 import 'package:provider/provider.dart';
+import 'package:firebase_auth_example/state/root.dart';
+import 'package:firebase_auth_example/state/theme.dart';
 
 // Screens:
-import 'package:firebase_auth_example/state/root.dart';
-import 'package:firebase_auth_example/screens/login_page.dart';
-import 'package:firebase_auth_example/screens/register_page.dart';
+
+// Models:
+
+// Services:
 
 // Firebase stuff:
 import 'package:firebase_core/firebase_core.dart';
+
+// Custom:
 
 // Entry point:
 void main() {
@@ -16,6 +23,7 @@ void main() {
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (BuildContext context) => RootState()),
+        ChangeNotifierProvider(create: (BuildContext context) => ThemeNotifier()),
       ],
       child: MyApp(),
     ),
@@ -23,23 +31,13 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  // final FirebaseAuth _auth = FirebaseAuth.instance;
-  // final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
 
       // Configure themes here:
-      theme: ThemeData.dark(),
-
-      // Configure routes/pages here:
-      routes: {
-        '/root': (context) => Root(),
-        '/login': (context) => LoginPage(),
-        '/register': (context) => RegisterPage()
-      },
+      theme: Provider.of<ThemeNotifier>(context).darkTheme ? darkTheme : lightTheme,
 
       home: FutureBuilder(
         // Initialize FlutterFire:
@@ -63,7 +61,7 @@ class MyApp extends StatelessWidget {
           // Otherwise, show something whilst waiting for initialization to complete
           return const Scaffold(
             body: Center(
-              child: Text("Loading..."),
+              child: CircularProgressIndicator(),
             ),
           );
         },
